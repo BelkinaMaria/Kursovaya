@@ -28,32 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            BinarySearchTree = new PictureBox();
+            pictureBoxBT = new PictureBox();
             buttonRemove = new Button();
             buttonSearch = new Button();
             buttonInsert = new Button();
-            buttonContinue = new Button();
-            buttonNext = new Button();
             buttonLoad = new Button();
             buttonSave = new Button();
             button1 = new Button();
             groupBoxSelectOperation = new GroupBox();
             groupBoxProgramManagement = new GroupBox();
+            buttonContinueStepByStep = new Button();
+            buttonContinueWithoutStops = new Button();
+            checkBoxStepByStep = new CheckBox();
             groupBoxDifferent = new GroupBox();
-            ((System.ComponentModel.ISupportInitialize)BinarySearchTree).BeginInit();
+            pictureBoxCompare = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBT).BeginInit();
             groupBoxSelectOperation.SuspendLayout();
             groupBoxProgramManagement.SuspendLayout();
             groupBoxDifferent.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxCompare).BeginInit();
             SuspendLayout();
             // 
-            // BinarySearchTree
+            // pictureBoxBT
             // 
-            BinarySearchTree.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            BinarySearchTree.Location = new Point(14, 12);
-            BinarySearchTree.Name = "BinarySearchTree";
-            BinarySearchTree.Size = new Size(752, 615);
-            BinarySearchTree.TabIndex = 0;
-            BinarySearchTree.TabStop = false;
+            pictureBoxBT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pictureBoxBT.Location = new Point(14, 12);
+            pictureBoxBT.Name = "pictureBoxBT";
+            pictureBoxBT.Size = new Size(1218, 733);
+            pictureBoxBT.TabIndex = 0;
+            pictureBoxBT.TabStop = false;
             // 
             // buttonRemove
             // 
@@ -64,6 +67,7 @@
             buttonRemove.TabIndex = 3;
             buttonRemove.Text = "Удалить элемент";
             buttonRemove.UseVisualStyleBackColor = true;
+            buttonRemove.Click += buttonRemove_Click;
             // 
             // buttonSearch
             // 
@@ -74,6 +78,7 @@
             buttonSearch.TabIndex = 2;
             buttonSearch.Text = "Найти элемент";
             buttonSearch.UseVisualStyleBackColor = true;
+            buttonSearch.Click += buttonSearch_Click;
             // 
             // buttonInsert
             // 
@@ -85,24 +90,6 @@
             buttonInsert.Text = "Вставить элемент";
             buttonInsert.UseVisualStyleBackColor = true;
             buttonInsert.Click += buttonInsert_Click;
-            // 
-            // buttonContinue
-            // 
-            buttonContinue.Location = new Point(178, 45);
-            buttonContinue.Name = "buttonContinue";
-            buttonContinue.Size = new Size(201, 111);
-            buttonContinue.TabIndex = 5;
-            buttonContinue.Text = "Продолжить без остановок";
-            buttonContinue.UseVisualStyleBackColor = true;
-            // 
-            // buttonNext
-            // 
-            buttonNext.Location = new Point(30, 45);
-            buttonNext.Name = "buttonNext";
-            buttonNext.Size = new Size(129, 111);
-            buttonNext.TabIndex = 4;
-            buttonNext.Text = "Далее";
-            buttonNext.UseVisualStyleBackColor = true;
             // 
             // buttonLoad
             // 
@@ -137,7 +124,7 @@
             groupBoxSelectOperation.Controls.Add(buttonRemove);
             groupBoxSelectOperation.Controls.Add(buttonInsert);
             groupBoxSelectOperation.Controls.Add(buttonSearch);
-            groupBoxSelectOperation.Location = new Point(773, 12);
+            groupBoxSelectOperation.Location = new Point(1239, 12);
             groupBoxSelectOperation.Name = "groupBoxSelectOperation";
             groupBoxSelectOperation.Size = new Size(412, 213);
             groupBoxSelectOperation.TabIndex = 6;
@@ -147,14 +134,47 @@
             // groupBoxProgramManagement
             // 
             groupBoxProgramManagement.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBoxProgramManagement.Controls.Add(buttonContinue);
-            groupBoxProgramManagement.Controls.Add(buttonNext);
-            groupBoxProgramManagement.Location = new Point(773, 232);
+            groupBoxProgramManagement.Controls.Add(buttonContinueStepByStep);
+            groupBoxProgramManagement.Controls.Add(buttonContinueWithoutStops);
+            groupBoxProgramManagement.Controls.Add(checkBoxStepByStep);
+            groupBoxProgramManagement.Location = new Point(1239, 232);
             groupBoxProgramManagement.Name = "groupBoxProgramManagement";
-            groupBoxProgramManagement.Size = new Size(412, 173);
+            groupBoxProgramManagement.Size = new Size(412, 222);
             groupBoxProgramManagement.TabIndex = 7;
             groupBoxProgramManagement.TabStop = false;
             groupBoxProgramManagement.Text = "Управление программой";
+            // 
+            // buttonContinueStepByStep
+            // 
+            buttonContinueStepByStep.Enabled = false;
+            buttonContinueStepByStep.Location = new Point(32, 94);
+            buttonContinueStepByStep.Name = "buttonContinueStepByStep";
+            buttonContinueStepByStep.Size = new Size(348, 47);
+            buttonContinueStepByStep.TabIndex = 5;
+            buttonContinueStepByStep.Text = "Далее";
+            buttonContinueStepByStep.UseVisualStyleBackColor = true;
+            buttonContinueStepByStep.Click += buttonContinueStepByStep_Click;
+            // 
+            // buttonContinueWithoutStops
+            // 
+            buttonContinueWithoutStops.Enabled = false;
+            buttonContinueWithoutStops.Location = new Point(30, 158);
+            buttonContinueWithoutStops.Name = "buttonContinueWithoutStops";
+            buttonContinueWithoutStops.Size = new Size(348, 47);
+            buttonContinueWithoutStops.TabIndex = 5;
+            buttonContinueWithoutStops.Text = "Продолжить без остановок";
+            buttonContinueWithoutStops.UseVisualStyleBackColor = true;
+            buttonContinueWithoutStops.Click += buttonContinueWithoutStops_Click;
+            // 
+            // checkBoxStepByStep
+            // 
+            checkBoxStepByStep.AutoSize = true;
+            checkBoxStepByStep.Location = new Point(42, 40);
+            checkBoxStepByStep.Name = "checkBoxStepByStep";
+            checkBoxStepByStep.Size = new Size(297, 37);
+            checkBoxStepByStep.TabIndex = 6;
+            checkBoxStepByStep.Text = "Выполнить пошагово";
+            checkBoxStepByStep.UseVisualStyleBackColor = true;
             // 
             // groupBoxDifferent
             // 
@@ -162,40 +182,50 @@
             groupBoxDifferent.Controls.Add(buttonLoad);
             groupBoxDifferent.Controls.Add(button1);
             groupBoxDifferent.Controls.Add(buttonSave);
-            groupBoxDifferent.Location = new Point(773, 411);
+            groupBoxDifferent.Location = new Point(1241, 460);
             groupBoxDifferent.Name = "groupBoxDifferent";
-            groupBoxDifferent.Size = new Size(412, 216);
+            groupBoxDifferent.Size = new Size(412, 214);
             groupBoxDifferent.TabIndex = 8;
             groupBoxDifferent.TabStop = false;
             groupBoxDifferent.Text = "Другое";
+            // 
+            // pictureBoxCompare
+            // 
+            pictureBoxCompare.Location = new Point(1241, 680);
+            pictureBoxCompare.Name = "pictureBoxCompare";
+            pictureBoxCompare.Size = new Size(410, 65);
+            pictureBoxCompare.TabIndex = 9;
+            pictureBoxCompare.TabStop = false;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(15F, 33F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1199, 639);
+            ClientSize = new Size(1665, 757);
+            Controls.Add(pictureBoxCompare);
             Controls.Add(groupBoxDifferent);
             Controls.Add(groupBoxProgramManagement);
             Controls.Add(groupBoxSelectOperation);
-            Controls.Add(BinarySearchTree);
+            Controls.Add(pictureBoxBT);
             Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "MainForm";
             Text = "MainForm";
-            ((System.ComponentModel.ISupportInitialize)BinarySearchTree).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBT).EndInit();
             groupBoxSelectOperation.ResumeLayout(false);
             groupBoxProgramManagement.ResumeLayout(false);
+            groupBoxProgramManagement.PerformLayout();
             groupBoxDifferent.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxCompare).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private PictureBox BinarySearchTree;
+        private PictureBox pictureBoxBT;
         private Button buttonSearch;
         private Button buttonInsert;
         private Button buttonRemove;
-        private Button buttonContinue;
-        private Button buttonNext;
         private Panel panel2;
         private Label labelDifferent;
         private Button buttonLoad;
@@ -204,5 +234,10 @@
         private GroupBox groupBoxSelectOperation;
         private GroupBox groupBoxProgramManagement;
         private GroupBox groupBoxDifferent;
+        private CheckBox checkBoxStepByStep;
+        private Button buttonContinueWithoutStops;
+        private PictureBox pictureBoxCompare;
+        private Button buttonContinueStepByStep;
+        private Button button2;
     }
 }

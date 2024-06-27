@@ -12,14 +12,17 @@ namespace Kursovaya;
 /// </summary>
 public class BinarySearchTree
 {
-    private Node root;
+    public Node root;
+    private int line;
+    private int?[,]? treeArray;
+    private Node?[,]? treeArrayNode;
 
-    public void Insert(Node node)
+    public void insert(Node node)
     {
-        root = InsertHelper(root, node);
+        root = insertHelper(root, node);
         Status status = new(root, OperationType.Insert, node.data);
     }
-    private Node InsertHelper(Node root, Node node)
+    private Node insertHelper(Node root, Node node)
     {
         int data = node.data;
 
@@ -30,22 +33,24 @@ public class BinarySearchTree
         }
         else if (data < root.data)
         {
-            root.left = InsertHelper(root.left, node);
+            root.left = insertHelper(root.left, node);
         }
         else
         {
-            root.right = InsertHelper(root.right, node);
+            root.right = insertHelper(root.right, node);
         }
         return root;
     }
 
-    public bool Search(int data)
+
+
+    public bool search(int data)
     {
         Status status = new(root, OperationType.Search, data);
-        return SearchHelper(root, data);
+        return searchHelper(root, data);
     }
 
-    private bool SearchHelper(Node root, int data)
+    private bool searchHelper(Node root, int data)
     {
         if (root == null)
         {
@@ -57,29 +62,30 @@ public class BinarySearchTree
         }
         else if (root.data > data)
         {
-            return SearchHelper(root.left, data);
+            return searchHelper(root.left, data);
         }
         else
         {
-            return SearchHelper(root.right, data);
+            return searchHelper(root.right, data);
         }
     }
 
-    public void Remove(int data)
+    public bool remove(int data)
     {
-        if (Search(data))
+        if (search(data))
         {
-            root = RemoveHelper(root, data);
+            root = removeHelper(root, data);
         }
         else
         {
-            Console.WriteLine(data + " could not be found!");
+            return false;
         }
 
-        Status status = new(root, OperationType.Insert, data);
+        Status status = new(root, OperationType.Remove, data);
+        return true;
     }
 
-    private Node RemoveHelper(Node root, int data)
+    private Node removeHelper(Node root, int data)
     {
         if (root == null)
         {
@@ -87,11 +93,11 @@ public class BinarySearchTree
         }
         else if (data < root.data)
         {
-            root.left = RemoveHelper(root.left, data);
+            root.left = removeHelper(root.left, data);
         }
         else if (data > root.data)
         {
-            root.right = RemoveHelper(root.right, data);
+            root.right = removeHelper(root.right, data);
         }
         else
         {
@@ -101,19 +107,19 @@ public class BinarySearchTree
             }
             else if (root.right != null)
             {
-                root.data = Successor(root);
-                root.right = RemoveHelper(root.right, root.data);
+                root.data = successor(root);
+                root.right = removeHelper(root.right, root.data);
             }
             else
             {
-                root.data = Predecessor(root);
-                root.left = RemoveHelper(root.left, root.data);
+                root.data = predecessor(root);
+                root.left = removeHelper(root.left, root.data);
             }
         }
         return root;
     }
 
-    private int Successor(Node root)
+    private int successor(Node root)
     {
         root = root.right;
         while (root.left != null)
@@ -123,7 +129,7 @@ public class BinarySearchTree
         return root.data;
     }
 
-    private int Predecessor(Node root)
+    private int predecessor(Node root)
     {
         root = root.left;
         while (root.right != null)
@@ -131,5 +137,79 @@ public class BinarySearchTree
             root = root.right;
         }
         return root.data;
+    }
+
+    public int getNumNodes(Node root)
+    {
+        if (root == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1 + getNumNodes(root.right) + getNumNodes(root.left);
+        }
+    }
+
+    public int getHeight(Node root)
+    {
+        if (root == null)
+        {
+            return 0;
+        }
+        else
+        {
+            int leftHeight = getHeight(root.left);
+            int rightHeight = getHeight(root.right);
+
+            if (leftHeight > rightHeight)
+            {
+                return leftHeight + 1;
+            }
+            else
+            {
+                return rightHeight + 1;
+            }
+        }
+    }
+
+    public int?[,]? getTreeInIntArray()
+    {
+        treeArray = new int?[getHeight(root), getNumNodes(root)];
+        line = 0;
+        getTreeInIntArrayHelper(root, 0);
+        return treeArray;
+    }
+
+    private void getTreeInIntArrayHelper(Node root, int lvl)
+    {
+        if (root == null)
+        {
+            return;
+        }
+        getTreeInIntArrayHelper(root.left, lvl + 1);
+        treeArray[lvl, line] = root.data;
+        line++;
+        getTreeInIntArrayHelper(root.right, lvl + 1);
+    }
+
+    public Node?[,]? getTreeInNodeArray()
+    {
+        treeArrayNode = new Node?[getHeight(root), getNumNodes(root)];
+        line = 0;
+        getTreeInNodeArrayHelper(root, 0);
+        return treeArrayNode;
+    }
+
+    private void getTreeInNodeArrayHelper(Node root, int lvl)
+    {
+        if (root == null)
+        {
+            return;
+        }
+        getTreeInNodeArrayHelper(root.left, lvl + 1);
+        treeArrayNode[lvl, line] = root;
+        line++;
+        getTreeInNodeArrayHelper(root.right, lvl + 1);
     }
 }
