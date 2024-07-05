@@ -28,9 +28,12 @@ public class Status
     /// </summary>
     public int data { get; set; }
 
-    /*List<int[]> steps { get; set; }
-
-    int currentStep;*/
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="currentTree"></param>
+    /// <param name="currentOperation"></param>
+    /// <param name="data"></param>
     public Status(int?[,] currentTree, OperationType currentOperation, int data)
     {
         this.currentTree = currentTree;

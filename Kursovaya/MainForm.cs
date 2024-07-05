@@ -13,10 +13,8 @@ namespace Kursovaya;
 
 public partial class MainForm : Form
 {
-    //BinarySearchTree tree = new();
-    //private Visualizer? visualizer;
     Management management = new Management();
-    //private OperationType operation;
+
     private bool continueStepByStep;
     private bool stopStepByStep;
     private int currentStep;
@@ -147,20 +145,17 @@ public partial class MainForm : Form
                     management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
                     steps = management.GetStepByStepList(value, management.visualizer);
                     management.ShowStepByStepInsert(steps[currentStep], oldVisualizer, pictureBoxBT, pictureBoxCompare);
-                    //currentStep++;
                     break;
 
                 case OperationType.Search:
                     management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
                     steps = management.GetStepByStepList(value, management.visualizer);
                     management.ShowStepByStepSearch(steps[currentStep], pictureBoxBT, pictureBoxCompare);
-                    //currentStep++;
                     break;
 
                 case OperationType.Remove:
                     steps = management.GetStepByStepList(value, management.visualizer);
                     management.ShowStepByStepRemove(steps[currentStep], pictureBoxBT, pictureBoxCompare);
-                    //currentStep++;
                     break;
             }
         }
@@ -170,7 +165,8 @@ public partial class MainForm : Form
             {
                 management.tree.remove(value);
             }
-            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree); 
+            endOfTheOperation(steps[steps.Count - 1][2]);
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
             management.updateStorage(value);
             management.visualizer.drawTree(g);
             pictureBoxBT.Image = bmp;
@@ -236,6 +232,12 @@ public partial class MainForm : Form
         }
     }
 
+
+    /// <summary>
+    /// Обработака нажатия кнопки "назад".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonBack_Click(object sender, EventArgs e)
     {
         if (currentStep > 0)
@@ -268,6 +270,10 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Конец операции - выводит итоги пройденой операции.
+    /// </summary>
+    /// <param name="value"></param>
     private void endOfTheOperation(int value)
     {
         switch (management.operation)
@@ -308,7 +314,6 @@ public partial class MainForm : Form
     /// <param name="e"></param>
     private void buttonStop_Click(object sender, EventArgs e)
     {
-        /*stopStepByStep = true;*/
         endOfTheOperation(steps[steps.Count - 1][2]);
         currentStep = steps.Count;
 
@@ -334,6 +339,11 @@ public partial class MainForm : Form
         pictureBoxBT.Image = bmp;
     }
 
+    /// <summary>
+    /// Обработака нажатия кнопки "сохранить".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonSave_Click(object sender, EventArgs e)
     {
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -343,33 +353,68 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Обработака нажатия кнопки "загрузить".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonLoad_Click(object sender, EventArgs e)
     {
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             management.storage.LoadFromFile(openFileDialog.FileName);
             MessageBox.Show("Загрузка прошла успешно.", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            management.arraytoTree();
+            management.arraytoTree(management.storage.states.Count - 1);
+
             management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
-            
             Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
             Graphics g = Graphics.FromImage(bmp);
             management.visualizer.drawTree(g);
             pictureBoxBT.Image = bmp;
         }
     }
-    /*if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                if (_storageCollection.LoadData(openFileDialog.FileName))
-                {
-                    MessageBox.Show("Загрузка прошла успешно.", "Результат",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RefreshListBoxItems();
-                }
-                else
-                {
-                    MessageBox.Show("Загрузка не удалась!", "Результат",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }*/
+
+    /// <summary>
+    /// Обработака нажатия прохода по состояниям вперёд.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ToolStripMenuItemNext_Click(object sender, EventArgs e)
+    {
+        if (management == null || management.storage == null)
+        {
+            return;
+        }
+        if (management.storage.MoveToNextState())
+        {
+            management.arraytoTree(management.storage.currentIndex);
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+            Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            management.visualizer.drawTree(g);
+            pictureBoxBT.Image = bmp;
+        }
+    }
+
+    /// <summary>
+    /// Обработака нажатия прохода по состояниям назад.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ToolStripMenuItemBack_Click(object sender, EventArgs e)
+    {
+        if (management == null || management.storage == null)
+        {
+            return;
+        }
+        if (management.storage.MoveToPreviouseState())
+        {
+            management.arraytoTree(management.storage.currentIndex);
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+            Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            management.visualizer.drawTree(g);
+            pictureBoxBT.Image = bmp;
+        }
+    }
 }

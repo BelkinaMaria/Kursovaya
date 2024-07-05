@@ -45,19 +45,24 @@
             pictureBoxCompare = new PictureBox();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
+            menuStrip1 = new MenuStrip();
+            ToolStripMenuItemStates = new ToolStripMenuItem();
+            ToolStripMenuItemBack = new ToolStripMenuItem();
+            ToolStripMenuItemNext = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBT).BeginInit();
             groupBoxSelectOperation.SuspendLayout();
             groupBoxProgramManagement.SuspendLayout();
             groupBoxDifferent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCompare).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBoxBT
             // 
             pictureBoxBT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBoxBT.Location = new Point(14, 12);
+            pictureBoxBT.Location = new Point(14, 43);
             pictureBoxBT.Name = "pictureBoxBT";
-            pictureBoxBT.Size = new Size(1218, 733);
+            pictureBoxBT.Size = new Size(1218, 702);
             pictureBoxBT.TabIndex = 0;
             pictureBoxBT.TabStop = false;
             // 
@@ -222,6 +227,39 @@
             // 
             openFileDialog.Filter = "txt file | *.txt";
             // 
+            // menuStrip1
+            // 
+            menuStrip1.ImageScalingSize = new Size(32, 32);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { ToolStripMenuItemStates });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1665, 42);
+            menuStrip1.TabIndex = 10;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // ToolStripMenuItemStates
+            // 
+            ToolStripMenuItemStates.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemBack, ToolStripMenuItemNext });
+            ToolStripMenuItemStates.Name = "ToolStripMenuItemStates";
+            ToolStripMenuItemStates.Size = new Size(288, 38);
+            ToolStripMenuItemStates.Text = "Проход по состояниям";
+            // 
+            // ToolStripMenuItemBack
+            // 
+            ToolStripMenuItemBack.Name = "ToolStripMenuItemBack";
+            ToolStripMenuItemBack.ShortcutKeys = Keys.Control | Keys.Z;
+            ToolStripMenuItemBack.Size = new Size(359, 44);
+            ToolStripMenuItemBack.Text = "Назад";
+            ToolStripMenuItemBack.Click += ToolStripMenuItemBack_Click;
+            // 
+            // ToolStripMenuItemNext
+            // 
+            ToolStripMenuItemNext.Name = "ToolStripMenuItemNext";
+            ToolStripMenuItemNext.ShortcutKeys = Keys.Control | Keys.Y;
+            ToolStripMenuItemNext.Size = new Size(359, 44);
+            ToolStripMenuItemNext.Text = "Вперёд";
+            ToolStripMenuItemNext.Click += ToolStripMenuItemNext_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(15F, 33F);
@@ -232,8 +270,10 @@
             Controls.Add(groupBoxProgramManagement);
             Controls.Add(groupBoxSelectOperation);
             Controls.Add(pictureBoxBT);
+            Controls.Add(menuStrip1);
             Font = new Font("Comic Sans MS", 9F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "MainForm";
             ((System.ComponentModel.ISupportInitialize)pictureBoxBT).EndInit();
@@ -242,7 +282,10 @@
             groupBoxProgramManagement.PerformLayout();
             groupBoxDifferent.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxCompare).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -266,5 +309,9 @@
         private Button buttonBack;
         private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem ToolStripMenuItemStates;
+        private ToolStripMenuItem ToolStripMenuItemBack;
+        private ToolStripMenuItem ToolStripMenuItemNext;
     }
 }

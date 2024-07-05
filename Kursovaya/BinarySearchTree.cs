@@ -24,7 +24,6 @@ public class BinarySearchTree
     public void insert(Node node)
     {
         root = insertHelper(root, node);
-        //Status status = new(root, OperationType.Insert, node.data);
     }
 
     /// <summary>
@@ -60,7 +59,6 @@ public class BinarySearchTree
     /// <returns></returns>
     public bool search(int data)
     {
-        //Status status = new(root, OperationType.Search, data);
         return searchHelper(root, data);
     }
 
@@ -106,7 +104,6 @@ public class BinarySearchTree
             return false;
         }
 
-        //Status status = new(root, OperationType.Remove, data);
         return true;
     }
 
@@ -271,8 +268,4 @@ public class BinarySearchTree
         line++;
         getTreeInNodeArrayHelper(root.right, lvl + 1);
     }
-
-    // TODO метод создания класса-состояния.
-    // TODO метод отката назад.
-    // TODO метод отката вперёд (если есть куда).
 }

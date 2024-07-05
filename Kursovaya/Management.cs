@@ -17,52 +17,12 @@ public class Management
     public OperationType operation;
     public Storage storage = new Storage();
 
-    //public bool continueStepByStep;
-
-/*    public void refresh(int value, bool stepByStep, PictureBox bigPictureBox, PictureBox smallPictureBox,
-        OperationType operation, Button buttonContinue, Button buttonStop, Form form)
-    {
-        Bitmap bmp = new(bigPictureBox.Width, bigPictureBox.Height);
-        Graphics g = Graphics.FromImage(bmp);
-        //int?[,] oldTreeArray;
-        Visualizer? oldVisualizer;
-        if (visualizer != null)
-        {
-            //oldTreeArray = visualizer.treeArray;
-            oldVisualizer = visualizer;
-        }
-        else
-        {
-            //oldTreeArray = null;
-            oldVisualizer = null;
-        }
-
-        visualizer = new Visualizer(bigPictureBox.Width,
-            bigPictureBox.Height, tree);
-
-        if (stepByStep && visualizer != null && oldVisualizer != null)
-        {
-            buttonContinue.Enabled = true;
-            buttonStop.Enabled = true;
-            
-            switch (operation)
-            {
-                case OperationType.Insert:
-                    List<int[]> steps = GetStepByStepList(value, visualizer);
-                    //проходка по шагам.
-                    break;
-
-                //case OperationType.Search:
-                
-
-            }
-        }
-    }
-
-
-
-
-*/
+    /// <summary>
+    /// Список координат для прохода по шагам.
+    /// </summary>
+    /// <param name="value">значение для сравнения</param>
+    /// <param name="visualizer">данные дерева, по которому идём</param>
+    /// <returns></returns>
     public List<int[]> GetStepByStepList(int value, Visualizer visualizer)
     {
         List<int[]> result = new List<int[]>();
@@ -107,6 +67,13 @@ public class Management
         return result;
     }
 
+    /// <summary>
+    /// Проход по шагам для вставки.
+    /// </summary>
+    /// <param name="step">текущий шаг</param>
+    /// <param name="oldVisualizer">старый визуализатор для сравнения</param>
+    /// <param name="bigPictureBox"></param>
+    /// <param name="smallPictureBox"></param>
     public void ShowStepByStepInsert(int[] step, Visualizer oldVisualizer, PictureBox bigPictureBox, PictureBox smallPictureBox)
     {
         int[] xy = visualizer.newElemXY(oldVisualizer.treeArray);
@@ -138,6 +105,13 @@ public class Management
         }
     }
 
+    /// <summary>
+    /// Проход по шагам для поиска.
+    /// </summary>
+    /// <param name="step">текущий шаг</param>
+    /// <param name="oldVisualizer">старый визуализатор для сравнения</param>
+    /// <param name="bigPictureBox"></param>
+    /// <param name="smallPictureBox"></param>
     public void ShowStepByStepSearch(int[] step, PictureBox bigPictureBox, PictureBox smallPictureBox)
     {
         using (Graphics g = bigPictureBox.CreateGraphics())
@@ -164,6 +138,13 @@ public class Management
         }
     }
 
+    /// <summary>
+    /// Проход по шагам для удаления.
+    /// </summary>
+    /// <param name="step">текущий шаг</param>
+    /// <param name="oldVisualizer">старый визуализатор для сравнения</param>
+    /// <param name="bigPictureBox"></param>
+    /// <param name="smallPictureBox"></param>
     public void ShowStepByStepRemove(int[] step, PictureBox bigPictureBox, PictureBox smallPictureBox)
     {
         using (Graphics g = bigPictureBox.CreateGraphics())
@@ -190,15 +171,23 @@ public class Management
         }
     }
 
+    /// <summary>
+    /// Добавлнеие статуса в хранилище.
+    /// </summary>
+    /// <param name="data"></param>
     public void updateStorage(int data)
     {
         Status status = new Status(visualizer.treeArray, operation, data);
         storage.AddStatus(status);
     }
 
-    public void arraytoTree()
+    /// <summary>
+    /// Загрузка нового массива в дерево (после сохранения или проходу по состояниям).
+    /// </summary>
+    /// <param name="index">индекс элемента списка статусов</param>
+    public void arraytoTree(int index)
     {
-        int?[,] array = storage.states[storage.currentIndex].currentTree;
+        int?[,] array = storage.states[index].currentTree;
 
         tree = new BinarySearchTree();
         for (int i = 0; i < array.GetLength(0); i++)
