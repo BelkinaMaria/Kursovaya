@@ -43,6 +43,8 @@
             checkBoxStepByStep = new CheckBox();
             groupBoxDifferent = new GroupBox();
             pictureBoxCompare = new PictureBox();
+            saveFileDialog = new SaveFileDialog();
+            openFileDialog = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBT).BeginInit();
             groupBoxSelectOperation.SuspendLayout();
             groupBoxProgramManagement.SuspendLayout();
@@ -100,6 +102,7 @@
             buttonLoad.TabIndex = 3;
             buttonLoad.Text = "Загрузить из файла";
             buttonLoad.UseVisualStyleBackColor = true;
+            buttonLoad.Click += buttonLoad_Click;
             // 
             // buttonSave
             // 
@@ -109,6 +112,7 @@
             buttonSave.TabIndex = 2;
             buttonSave.Text = "Сохранить в файл";
             buttonSave.UseVisualStyleBackColor = true;
+            buttonSave.Click += buttonSave_Click;
             // 
             // buttonInfo
             // 
@@ -210,6 +214,14 @@
             pictureBoxCompare.TabIndex = 9;
             pictureBoxCompare.TabStop = false;
             // 
+            // saveFileDialog
+            // 
+            saveFileDialog.Filter = "txt file | *.txt";
+            // 
+            // openFileDialog
+            // 
+            openFileDialog.Filter = "txt file | *.txt";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(15F, 33F);
@@ -252,5 +264,7 @@
         private PictureBox pictureBoxCompare;
         private Button buttonContinue;
         private Button buttonBack;
+        private SaveFileDialog saveFileDialog;
+        private OpenFileDialog openFileDialog;
     }
 }

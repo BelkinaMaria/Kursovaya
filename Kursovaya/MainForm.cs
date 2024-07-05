@@ -122,23 +122,10 @@ public partial class MainForm : Form
         Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
         Graphics g = Graphics.FromImage(bmp);
 
-        /*if (management.visualizer != null)
-        {
-            oldVisualizer = management.visualizer;
-        }
-        else
-        {
-            oldVisualizer = null;
-        }
-
-        management.visualizer = new Visualizer(pictureBoxBT.Width,
-            pictureBoxBT.Height, management.tree);*/
-
         if (checkBoxStepByStep.Checked)
         {
             buttonContinue.Enabled = true;
             buttonStop.Enabled = true;
-            //buttonBack.Enabled = true;
 
             buttonInsert.Enabled = false;
             buttonSearch.Enabled = false;
@@ -175,12 +162,16 @@ public partial class MainForm : Form
                     management.ShowStepByStepRemove(steps[currentStep], pictureBoxBT, pictureBoxCompare);
                     //currentStep++;
                     break;
-                    
             }
         }
         else
         {
-            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+            if (management.operation == OperationType.Remove)
+            {
+                management.tree.remove(value);
+            }
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree); 
+            management.updateStorage(value);
             management.visualizer.drawTree(g);
             pictureBoxBT.Image = bmp;
         }
@@ -204,7 +195,7 @@ public partial class MainForm : Form
 
                 case OperationType.Search:
                     management.ShowStepByStepSearch(steps[currentStep], pictureBoxBT, pictureBoxCompare);
-                    
+
                     break;
 
                 case OperationType.Remove:
@@ -234,10 +225,12 @@ public partial class MainForm : Form
             }
             Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
             Graphics g = Graphics.FromImage(bmp);
-            if (management.operation == OperationType.Remove) 
-            { 
+            if (management.operation == OperationType.Remove)
+            {
+                management.tree.remove(steps[steps.Count - 1][2]);
                 management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
             }
+            management.updateStorage(steps[steps.Count - 1][2]);
             management.visualizer.drawTree(g);
             pictureBoxBT.Image = bmp;
         }
@@ -267,7 +260,7 @@ public partial class MainForm : Form
             if (currentStep > 0)
             {
                 buttonBack.Enabled = true;
-            } 
+            }
             else
             {
                 buttonBack.Enabled = false;
@@ -340,4 +333,43 @@ public partial class MainForm : Form
         management.visualizer.drawTree(g);
         pictureBoxBT.Image = bmp;
     }
+
+    private void buttonSave_Click(object sender, EventArgs e)
+    {
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            management.storage.SaveToFile(saveFileDialog.FileName);
+            MessageBox.Show("Сохранение прошло успешно.", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    private void buttonLoad_Click(object sender, EventArgs e)
+    {
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            management.storage.LoadFromFile(openFileDialog.FileName);
+            MessageBox.Show("Загрузка прошла успешно.", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            management.arraytoTree();
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+            
+            Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            management.visualizer.drawTree(g);
+            pictureBoxBT.Image = bmp;
+        }
+    }
+    /*if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (_storageCollection.LoadData(openFileDialog.FileName))
+                {
+                    MessageBox.Show("Загрузка прошла успешно.", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshListBoxItems();
+                }
+                else
+                {
+                    MessageBox.Show("Загрузка не удалась!", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }*/
 }

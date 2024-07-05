@@ -10,24 +10,28 @@ namespace Kursovaya;
 /// <summary>
 /// Класс-состояние.
 /// </summary>
+[Serializable]
 public class Status
 {
     /// <summary>
     /// Состояние дерева на данный момент.
     /// </summary>
-    Node currentTree { get; set; }
+    public int?[,] currentTree { get; set; }
 
     /// <summary>
     /// Текущая операция.
     /// </summary>
-    OperationType currentOperation { get; set; }
+    public OperationType currentOperation { get; set; }
 
     /// <summary>
     /// Число, над которым оперируют.
     /// </summary>
-    int data { get; set; }
+    public int data { get; set; }
 
-    public Status(Node currentTree, OperationType currentOperation, int data)
+    /*List<int[]> steps { get; set; }
+
+    int currentStep;*/
+    public Status(int?[,] currentTree, OperationType currentOperation, int data)
     {
         this.currentTree = currentTree;
         this.currentOperation = currentOperation;

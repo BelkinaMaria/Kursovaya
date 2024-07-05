@@ -15,6 +15,7 @@ public class Management
     public BinarySearchTree tree = new();
     public Visualizer? visualizer;
     public OperationType operation;
+    public Storage storage = new Storage();
 
     //public bool continueStepByStep;
 
@@ -184,6 +185,29 @@ public class Management
                 {
                     gr.Clear(smallPictureBox.BackColor);
                     gr.DrawString($"{step[2]} >= {step[3]}", new Font("Arial", 12), Brushes.Black, new PointF(10, 10));
+                }
+            }
+        }
+    }
+
+    public void updateStorage(int data)
+    {
+        Status status = new Status(visualizer.treeArray, operation, data);
+        storage.AddStatus(status);
+    }
+
+    public void arraytoTree()
+    {
+        int?[,] array = storage.states[storage.currentIndex].currentTree;
+
+        tree = new BinarySearchTree();
+        for (int i = 0; i < array.GetLength(0); i++)
+        {
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                if (array[i, j] != null)
+                {
+                    tree.insert(new Node((int)array[i, j]));
                 }
             }
         }
