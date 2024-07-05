@@ -13,29 +13,40 @@ namespace Kursovaya;
 
 public partial class MainForm : Form
 {
-    private OperationType operation;
-    BinarySearchTree tree = new();
-    private Visualizer? visualizer;
-
+    //BinarySearchTree tree = new();
+    //private Visualizer? visualizer;
+    Management management = new Management();
+    //private OperationType operation;
     private bool continueStepByStep;
     private bool stopStepByStep;
+    private int currentStep;
+    List<int[]> steps;
+    Visualizer? oldVisualizer;
 
+    /// <summary>
+    /// Конструктор
+    /// </summary>
     public MainForm()
     {
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Нажатие кнопки "вставить элемент".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonInsert_Click(object sender, EventArgs e)
     {
-        if (tree.getNumNodes(tree.root) <= 20)
+        if (management.tree.getNumNodes(management.tree.root) <= 20)
         {
-            operation = OperationType.Insert;
+            management.operation = OperationType.Insert;
             NewNumberForm numForm = new();
             numForm.ShowDialog();
             int? value = numForm.Number;
             if (value != null)
             {
-                tree.insert(new Node((int)value));
+                management.tree.insert(new Node((int)value));
                 refresh((int)value);
 
             }
@@ -47,11 +58,16 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Нажатие кнопки "найти элемент".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonSearch_Click(object sender, EventArgs e)
     {
-        if (tree.getNumNodes(tree.root) > 0)
+        if (management.tree.getNumNodes(management.tree.root) > 0)
         {
-            operation = OperationType.Search;
+            management.operation = OperationType.Search;
             NewNumberForm numForm = new();
             numForm.ShowDialog();
             int? value = numForm.Number;
@@ -59,7 +75,7 @@ public partial class MainForm : Form
             {
                 refresh((int)value);
             }
-            
+
         }
         else
         {
@@ -68,17 +84,22 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Нажатие кнопки "удалить элемент".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void buttonRemove_Click(object sender, EventArgs e)
     {
-        if (tree.getNumNodes(tree.root) > 0)
+        if (management.tree.getNumNodes(management.tree.root) > 0)
         {
-            operation = OperationType.Remove;
+            management.operation = OperationType.Remove;
             NewNumberForm numForm = new();
             numForm.ShowDialog();
             int? value = numForm.Number;
             if (value != null)
             {
-                tree.remove((int)value);
+                management.tree.search((int)value);
 
                 refresh((int)value);
             }
@@ -90,85 +111,84 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Изменение pictureBoxBT и пошаговое выполнение.
+    /// </summary>
+    /// <param name="value"></param>
     private void refresh(int value)
     {
-        if (tree.root == null) return;
+        if (management.tree.root == null) return;
 
-        Bitmap bmp = new(pictureBoxBT.Width,
-            pictureBoxBT.Height);
+        Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
         Graphics g = Graphics.FromImage(bmp);
-        int?[,] oldTreeArray;
-        Visualizer? oldVisualizer;
-        if (visualizer != null)
+
+        /*if (management.visualizer != null)
         {
-            oldTreeArray = visualizer.treeArray;
-            oldVisualizer = visualizer;
+            oldVisualizer = management.visualizer;
         }
         else
         {
-            oldTreeArray = null;
             oldVisualizer = null;
         }
 
-        visualizer = new Visualizer(pictureBoxBT.Width,
-            pictureBoxBT.Height, tree);
+        management.visualizer = new Visualizer(pictureBoxBT.Width,
+            pictureBoxBT.Height, management.tree);*/
 
-        if (checkBoxStepByStep.Checked && visualizer != null && oldTreeArray != null)
+        if (checkBoxStepByStep.Checked)
         {
-            buttonContinueStepByStep.Enabled = true;
-            buttonContinueWithoutStops.Enabled = true;
-            switch (operation)
+            buttonContinue.Enabled = true;
+            buttonStop.Enabled = true;
+            //buttonBack.Enabled = true;
+
+            currentStep = 0;
+            switch (management.operation)
             {
                 case OperationType.Insert:
-                    goStepByStepInsert(value, oldTreeArray);
-                    break;
-                case OperationType.Search:
+                    if (management.visualizer != null)
                     {
-                        goStepByStepSearch(value);
-
-                        if (tree.search(value))
-                        {
-                            MessageBox.Show("Элемент \"" + value + "\" найден.", "Результат",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Элемент \"" + value + "\" отсутствует в дереве.", "Результат",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        break;
+                        oldVisualizer = management.visualizer;
                     }
+                    else
+                    {
+                        oldVisualizer = null;
+                    }
+
+                    management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+                    steps = management.GetStepByStepList(value, management.visualizer);
+                    management.ShowStepByStepInsert(steps[currentStep], oldVisualizer, pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    break;
+
+                case OperationType.Search:
+                    management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+                    steps = management.GetStepByStepList(value, management.visualizer);
+                    management.ShowStepByStepSearch(steps[currentStep], pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    break;
 
                 case OperationType.Remove:
-                    {
-                        goStepByStepRemove(value, oldVisualizer);
-                        if (tree.remove(value))
-                        {
-                            MessageBox.Show("Элемент \"" + value + "\" удалён.", "Результат",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Элемент \"" + value + "\" отсутствует в дереве.", "Результат",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        break;
-                    }
-
-            }
-            buttonContinueStepByStep.Enabled = false;
-            buttonContinueWithoutStops.Enabled = false;
-            stopStepByStep = false;
-            using (Graphics gr = pictureBoxCompare.CreateGraphics())
-            {
-                gr.Clear(pictureBoxCompare.BackColor);
+                    steps = management.GetStepByStepList(value, management.visualizer);
+                    management.ShowStepByStepRemove(steps[currentStep], pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    break;
+                    
             }
         }
-
-        visualizer.drawTree(g);
-        pictureBoxBT.Image = bmp;
+        else
+        {
+            management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+            management.visualizer.drawTree(g);
+            pictureBoxBT.Image = bmp;
+        }
     }
 
+
+
+    /*/// <summary>
+    /// Выполнение пошаговой вставки.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="oldTreeArray"></param>
     private void goStepByStepInsert(int value, int?[,] oldTreeArray)
     {
         int[] xy = visualizer.newElemXY(oldTreeArray);
@@ -270,8 +290,12 @@ public partial class MainForm : Form
                 }
             }
         }
-    }
+    }*/
 
+    /*/// <summary>
+    /// Выполение пошагового поиска.
+    /// </summary>
+    /// <param name="value"></param>
     private void goStepByStepSearch(int value)
     {
         using (Graphics g = pictureBoxBT.CreateGraphics())
@@ -288,7 +312,7 @@ public partial class MainForm : Form
                 continueStepByStep = false;
                 using (Graphics gr = pictureBoxCompare.CreateGraphics())
                 {
-                    if (visualizer.treeArray[0, j] > value) 
+                    if (visualizer.treeArray[0, j] > value)
                     {
                         gr.Clear(pictureBoxCompare.BackColor);
                         gr.DrawString($"{value} < {visualizer.treeArrayNode[0, j].data}", new Font("Arial", 12), Brushes.Black, new PointF(10, 10));
@@ -339,9 +363,9 @@ public partial class MainForm : Form
                     {
                         if (visualizer.treeArrayNode[i, j].right != null)
                         {
+                            j = visualizer.nextNumRight(i + 1, j);
                             using (Graphics gr = pictureBoxCompare.CreateGraphics())
                             {
-                                j = visualizer.nextNumRight(i + 1, j); 
                                 if (visualizer.treeArray[i + 1, j] > value)
                                 {
                                     gr.Clear(pictureBoxCompare.BackColor);
@@ -371,8 +395,13 @@ public partial class MainForm : Form
                 }
             }
         }
-    }
+    }*/
 
+    /*/// <summary>
+    /// Выполнение пошагового удаления.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="oldVisualiser"></param>
     private void goStepByStepRemove(int value, Visualizer oldVisualiser)
     {
         using (Graphics g = pictureBoxBT.CreateGraphics())
@@ -442,7 +471,7 @@ public partial class MainForm : Form
                             j = oldVisualiser.nextNumRight(i + 1, j);
                             using (Graphics gr = pictureBoxCompare.CreateGraphics())
                             {
-                            j = oldVisualiser.nextNumRight(i + 1, j); 
+                                j = oldVisualiser.nextNumRight(i + 1, j);
                                 if (oldVisualiser.treeArray[i + 1, j] > value)
                                 {
                                     gr.Clear(pictureBoxCompare.BackColor);
@@ -472,14 +501,102 @@ public partial class MainForm : Form
                 }
             }
         }
-    }
+    }*/
 
-    private void buttonContinueStepByStep_Click(object sender, EventArgs e)
+    /// <summary>
+    /// Нажатие кнопки "далее".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonContinue_Click(object sender, EventArgs e)
     {
-        continueStepByStep = true;
+        if (!stopStepByStep && /*(*/steps.Count > currentStep /*&& (management.operation == OperationType.Insert || management.operation == OperationType.Search) ||
+            steps.Count + 1 > currentStep && management.operation == OperationType.Remove)*/)
+        {
+            switch (management.operation)
+            {
+                case OperationType.Insert:
+                    management.ShowStepByStepInsert(steps[currentStep], oldVisualizer, pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    break;
+
+                case OperationType.Search:
+                    management.ShowStepByStepSearch(steps[currentStep], pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    
+                    break;
+
+                case OperationType.Remove:
+                    management.ShowStepByStepRemove(steps[currentStep], pictureBoxBT, pictureBoxCompare);
+                    currentStep++;
+                    break;
+            }
+        }
+        else if ((/*(*/steps.Count <= currentStep || stopStepByStep)/* && (management.operation == OperationType.Insert || management.operation == OperationType.Search)) ||
+            ((steps.Count <= currentStep + 1 || stopStepByStep) && management.operation == OperationType.Remove)*/)
+        {
+            endOfTheOperation(steps[steps.Count - 1][2]);
+            buttonContinue.Enabled = false;
+            buttonBack.Enabled = false;
+            buttonStop.Enabled = false;
+            stopStepByStep = false;
+            using (Graphics gr = pictureBoxCompare.CreateGraphics())
+            {
+                gr.Clear(pictureBoxCompare.BackColor);
+            }
+            Bitmap bmp = new(pictureBoxBT.Width, pictureBoxBT.Height);
+            Graphics g = Graphics.FromImage(bmp);
+
+            management.visualizer.drawTree(g);
+            pictureBoxBT.Image = bmp;
+        }
     }
 
-    private void buttonContinueWithoutStops_Click(object sender, EventArgs e)
+    // TODO закинуть в отдельную приватную функцию switch с разными окончаниями (для remove и search)
+    private void endOfTheOperation(int value)
+    {
+        switch (management.operation)
+        {
+            case OperationType.Search:
+                if (management.tree.search(value))
+                {
+                    MessageBox.Show("Элемент \"" + value + "\" найден.", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Элемент \"" + value + "\" отсутствует в дереве.", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                break;
+
+            case OperationType.Remove:
+                management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+                if (management.tree.remove(value))
+                {
+                    MessageBox.Show("Элемент \"" + value + "\" удалён.", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Элемент \"" + value + "\" отсутствует в дереве.", "Результат",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                break;
+        }
+    }
+
+    private void buttonBack_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    /// <summary>
+    /// Нажатие кнопки "продолжить без остановок".
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void buttonStop_Click(object sender, EventArgs e)
     {
         stopStepByStep = true;
     }

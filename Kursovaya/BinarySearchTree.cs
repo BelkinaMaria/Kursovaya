@@ -17,11 +17,22 @@ public class BinarySearchTree
     private int?[,]? treeArray;
     private Node?[,]? treeArrayNode;
 
+    /// <summary>
+    /// Вставить элемент.
+    /// </summary>
+    /// <param name="node"></param>
     public void insert(Node node)
     {
         root = insertHelper(root, node);
-        Status status = new(root, OperationType.Insert, node.data);
+        //Status status = new(root, OperationType.Insert, node.data);
     }
+
+    /// <summary>
+    /// Рекурсивная функция для вставки.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="node"></param>
+    /// <returns></returns>
     private Node insertHelper(Node root, Node node)
     {
         int data = node.data;
@@ -42,14 +53,23 @@ public class BinarySearchTree
         return root;
     }
 
-
-
+    /// <summary>
+    /// Поиск элемента.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public bool search(int data)
     {
-        Status status = new(root, OperationType.Search, data);
+        //Status status = new(root, OperationType.Search, data);
         return searchHelper(root, data);
     }
 
+    /// <summary>
+    /// Рекурсивная функция поиска элемента.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
     private bool searchHelper(Node root, int data)
     {
         if (root == null)
@@ -70,6 +90,11 @@ public class BinarySearchTree
         }
     }
 
+    /// <summary>
+    /// Удаления элемента.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public bool remove(int data)
     {
         if (search(data))
@@ -81,10 +106,16 @@ public class BinarySearchTree
             return false;
         }
 
-        Status status = new(root, OperationType.Remove, data);
+        //Status status = new(root, OperationType.Remove, data);
         return true;
     }
 
+    /// <summary>
+    /// Рекурсивная функция удаления элемента.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
     private Node removeHelper(Node root, int data)
     {
         if (root == null)
@@ -139,6 +170,11 @@ public class BinarySearchTree
         return root.data;
     }
 
+    /// <summary>
+    /// Получение количества вершин.
+    /// </summary>
+    /// <param name="root">корень</param>
+    /// <returns>количество вершин</returns>
     public int getNumNodes(Node root)
     {
         if (root == null)
@@ -151,6 +187,11 @@ public class BinarySearchTree
         }
     }
 
+    /// <summary>
+    /// Получение высоты дерева.
+    /// </summary>
+    /// <param name="root">корень</param>
+    /// <returns>высота дерева</returns>
     public int getHeight(Node root)
     {
         if (root == null)
@@ -173,6 +214,10 @@ public class BinarySearchTree
         }
     }
 
+    /// <summary>
+    /// Помещение дерева в массив.
+    /// </summary>
+    /// <returns>массив дерева в числах</returns>
     public int?[,]? getTreeInIntArray()
     {
         treeArray = new int?[getHeight(root), getNumNodes(root)];
@@ -181,6 +226,11 @@ public class BinarySearchTree
         return treeArray;
     }
 
+    /// <summary>
+    /// Рекурсивная функция помещения дерева в массив.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="lvl"></param>
     private void getTreeInIntArrayHelper(Node root, int lvl)
     {
         if (root == null)
@@ -193,6 +243,10 @@ public class BinarySearchTree
         getTreeInIntArrayHelper(root.right, lvl + 1);
     }
 
+    /// <summary>
+    /// Помещение дерева в массив
+    /// </summary>
+    /// <returns>массив дерева в вершинах</returns>
     public Node?[,]? getTreeInNodeArray()
     {
         treeArrayNode = new Node?[getHeight(root), getNumNodes(root)];
@@ -201,6 +255,11 @@ public class BinarySearchTree
         return treeArrayNode;
     }
 
+    /// <summary>
+    /// Рекурсивная функция помещения дерева в массив.
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="lvl"></param>
     private void getTreeInNodeArrayHelper(Node root, int lvl)
     {
         if (root == null)
@@ -212,4 +271,8 @@ public class BinarySearchTree
         line++;
         getTreeInNodeArrayHelper(root.right, lvl + 1);
     }
+
+    // TODO метод создания класса-состояния.
+    // TODO метод отката назад.
+    // TODO метод отката вперёд (если есть куда).
 }

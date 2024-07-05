@@ -8,7 +8,18 @@ namespace Kursovaya;
 
 public enum OperationType
 {
+    /// <summary>
+    /// Вставка.
+    /// </summary>
     Insert,
+
+    /// <summary>
+    /// Удаление.
+    /// </summary>
     Remove,
+
+    /// <summary>
+    /// Поиск.
+    /// </summary>
     Search
 }

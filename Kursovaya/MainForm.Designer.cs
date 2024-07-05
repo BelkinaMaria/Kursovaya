@@ -34,11 +34,12 @@
             buttonInsert = new Button();
             buttonLoad = new Button();
             buttonSave = new Button();
-            button1 = new Button();
+            buttonInfo = new Button();
             groupBoxSelectOperation = new GroupBox();
             groupBoxProgramManagement = new GroupBox();
-            buttonContinueStepByStep = new Button();
-            buttonContinueWithoutStops = new Button();
+            buttonBack = new Button();
+            buttonContinue = new Button();
+            buttonStop = new Button();
             checkBoxStepByStep = new CheckBox();
             groupBoxDifferent = new GroupBox();
             pictureBoxCompare = new PictureBox();
@@ -109,14 +110,14 @@
             buttonSave.Text = "Сохранить в файл";
             buttonSave.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonInfo
             // 
-            button1.Location = new Point(30, 45);
-            button1.Name = "button1";
-            button1.Size = new Size(348, 47);
-            button1.TabIndex = 1;
-            button1.Text = "Информация";
-            button1.UseVisualStyleBackColor = true;
+            buttonInfo.Location = new Point(30, 45);
+            buttonInfo.Name = "buttonInfo";
+            buttonInfo.Size = new Size(348, 47);
+            buttonInfo.TabIndex = 1;
+            buttonInfo.Text = "Информация";
+            buttonInfo.UseVisualStyleBackColor = true;
             // 
             // groupBoxSelectOperation
             // 
@@ -134,8 +135,9 @@
             // groupBoxProgramManagement
             // 
             groupBoxProgramManagement.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBoxProgramManagement.Controls.Add(buttonContinueStepByStep);
-            groupBoxProgramManagement.Controls.Add(buttonContinueWithoutStops);
+            groupBoxProgramManagement.Controls.Add(buttonBack);
+            groupBoxProgramManagement.Controls.Add(buttonContinue);
+            groupBoxProgramManagement.Controls.Add(buttonStop);
             groupBoxProgramManagement.Controls.Add(checkBoxStepByStep);
             groupBoxProgramManagement.Location = new Point(1239, 232);
             groupBoxProgramManagement.Name = "groupBoxProgramManagement";
@@ -144,27 +146,38 @@
             groupBoxProgramManagement.TabStop = false;
             groupBoxProgramManagement.Text = "Управление программой";
             // 
-            // buttonContinueStepByStep
+            // buttonBack
             // 
-            buttonContinueStepByStep.Enabled = false;
-            buttonContinueStepByStep.Location = new Point(32, 94);
-            buttonContinueStepByStep.Name = "buttonContinueStepByStep";
-            buttonContinueStepByStep.Size = new Size(348, 47);
-            buttonContinueStepByStep.TabIndex = 5;
-            buttonContinueStepByStep.Text = "Далее";
-            buttonContinueStepByStep.UseVisualStyleBackColor = true;
-            buttonContinueStepByStep.Click += buttonContinueStepByStep_Click;
+            buttonBack.Enabled = false;
+            buttonBack.Location = new Point(208, 94);
+            buttonBack.Name = "buttonBack";
+            buttonBack.Size = new Size(169, 47);
+            buttonBack.TabIndex = 5;
+            buttonBack.Text = "Назад";
+            buttonBack.UseVisualStyleBackColor = true;
+            buttonBack.Click += buttonBack_Click;
             // 
-            // buttonContinueWithoutStops
+            // buttonContinue
             // 
-            buttonContinueWithoutStops.Enabled = false;
-            buttonContinueWithoutStops.Location = new Point(30, 158);
-            buttonContinueWithoutStops.Name = "buttonContinueWithoutStops";
-            buttonContinueWithoutStops.Size = new Size(348, 47);
-            buttonContinueWithoutStops.TabIndex = 5;
-            buttonContinueWithoutStops.Text = "Продолжить без остановок";
-            buttonContinueWithoutStops.UseVisualStyleBackColor = true;
-            buttonContinueWithoutStops.Click += buttonContinueWithoutStops_Click;
+            buttonContinue.Enabled = false;
+            buttonContinue.Location = new Point(31, 94);
+            buttonContinue.Name = "buttonContinue";
+            buttonContinue.Size = new Size(169, 47);
+            buttonContinue.TabIndex = 5;
+            buttonContinue.Text = "Далее";
+            buttonContinue.UseVisualStyleBackColor = true;
+            buttonContinue.Click += buttonContinue_Click;
+            // 
+            // buttonStop
+            // 
+            buttonStop.Enabled = false;
+            buttonStop.Location = new Point(30, 158);
+            buttonStop.Name = "buttonStop";
+            buttonStop.Size = new Size(348, 47);
+            buttonStop.TabIndex = 5;
+            buttonStop.Text = "Продолжить без остановок";
+            buttonStop.UseVisualStyleBackColor = true;
+            buttonStop.Click += buttonStop_Click;
             // 
             // checkBoxStepByStep
             // 
@@ -180,7 +193,7 @@
             // 
             groupBoxDifferent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             groupBoxDifferent.Controls.Add(buttonLoad);
-            groupBoxDifferent.Controls.Add(button1);
+            groupBoxDifferent.Controls.Add(buttonInfo);
             groupBoxDifferent.Controls.Add(buttonSave);
             groupBoxDifferent.Location = new Point(1241, 460);
             groupBoxDifferent.Name = "groupBoxDifferent";
@@ -230,14 +243,15 @@
         private Label labelDifferent;
         private Button buttonLoad;
         private Button buttonSave;
-        private Button button1;
+        private Button buttonInfo;
         private GroupBox groupBoxSelectOperation;
         private GroupBox groupBoxProgramManagement;
         private GroupBox groupBoxDifferent;
         private CheckBox checkBoxStepByStep;
-        private Button buttonContinueWithoutStops;
+        private Button buttonStop;
         private PictureBox pictureBoxCompare;
-        private Button buttonContinueStepByStep;
+        private Button buttonContinue;
         private Button button2;
+        private Button buttonBack;
     }
 }

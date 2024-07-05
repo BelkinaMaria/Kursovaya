@@ -14,12 +14,12 @@ namespace Kursovaya;
 public class Visualizer
 {
     ///<summary>
-    ///Ширина окна
+    ///Ширина окна.
     /// </summary>
     private int? _pictureWidth;
 
     ///<summary>
-    ///Высота окна
+    ///Высота окна.
     /// </summary>
     private int? _pictureHeight;
 
@@ -29,7 +29,12 @@ public class Visualizer
     public int[,] y;
     private PointF[,] points;
 
-
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="tree"></param>
     public Visualizer(int width, int height, BinarySearchTree tree)
     {
         _pictureWidth = width;
@@ -98,6 +103,10 @@ public class Visualizer
 
     }
 
+    /// <summary>
+    /// Отрисовка дерева.
+    /// </summary>
+    /// <param name="g"></param>
     public void drawTree(Graphics g)
     {
         if (_pictureHeight == null || _pictureWidth == null || treeArray == null) return;
@@ -118,6 +127,12 @@ public class Visualizer
         drawLines(g);
     }
 
+    /// <summary>
+    /// Отрисовка дерева без элемента x, y (для пошаговой вставки).
+    /// </summary>
+    /// <param name="g"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void drawTreeWithoutElem(Graphics g, int x, int y)
     {
         int?[,]? newTreeArray = (int?[,]?)treeArray.Clone();
@@ -139,9 +154,12 @@ public class Visualizer
         }
 
         drawLinesWithoutElem(g, newTreeArray);
-        //drawLines(g);
     }
 
+    /// <summary>
+    /// Отрисовка линий для дерева.
+    /// </summary>
+    /// <param name="g"></param>
     private void drawLines(Graphics g)
     {
         Pen blackPen = new(Color.Black, 3);
@@ -152,14 +170,11 @@ public class Visualizer
             {
                 if (treeArray[i, j] != null && treeArrayNode[i, j].right != null)
                 {
-                    /*int k = 0;
+                    int k = j/*nextNumRight(i + 1, j)*/;
                     while (treeArray[i + 1, k] != treeArrayNode[i, j].right.data)
                     {
                         k++;
-                    }*/
-
-                    int k = nextNumRight(i + 1, j);
-
+                    }
                     Point point1 = new Point(x[i, j] + 25, y[i, j] + 30);
                     Point point2 = new Point(x[i + 1, k] + 25, y[i + 1, k]);
                     g.DrawLine(blackPen, point1, point2);
@@ -171,14 +186,13 @@ public class Visualizer
         {
             for (int j = 1; j < treeArray.GetLength(1); j++)
             {
-                if (treeArray[i, j] != null/* && treeArrayNode[i, j].left != null*/)
+                if (treeArray[i, j] != null && treeArrayNode[i, j].left != null)
                 {
-                    /*int k = 0;
+                    int k = j;
                     while (treeArray[i + 1, k] != treeArrayNode[i, j].left.data)
                     {
-                        k++;
-                    }*/
-                    int k = nextNumLeft(i + 1, j);
+                        k--;
+                    }
                     Point point1 = new Point(x[i, j] + 25, y[i, j] + 30);
                     Point point2 = new Point(x[i + 1, k] + 25, y[i + 1, k]);
                     g.DrawLine(blackPen, point1, point2);
@@ -187,6 +201,11 @@ public class Visualizer
         }
     }
 
+    /// <summary>
+    /// Отрисовка линий для дерева без одного элемента.
+    /// </summary>
+    /// <param name="g"></param>
+    /// <param name="newTreeArray"></param>
     private void drawLinesWithoutElem(Graphics g, int?[,]? newTreeArray)
     {
         Pen blackPen = new(Color.Black, 3);
@@ -236,11 +255,14 @@ public class Visualizer
         }
     }
 
-
-
+    /// <summary>
+    /// Поиск следующего элемнета дерева.
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
     public int nextNumRight(int line, int index) 
     {
-        //if ((line < 0) || (line >= treeArray.GetLength(1)))
         for (int i = index; i < treeArray.GetLength(1); i++)
         {
             if (treeArray[line, i] != null) return i;
@@ -248,6 +270,12 @@ public class Visualizer
         return -1;
     }
 
+    /// <summary>
+    /// Поиск предыдущего элемента дерева.
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
     public int nextNumLeft(int line, int index)
     {
         for (int i = index; i >= 0; i--)
@@ -257,6 +285,11 @@ public class Visualizer
         return -1;
     }
 
+    /// <summary>
+    /// Поиск добавленого элемента.
+    /// </summary>
+    /// <param name="oldTreeArray"></param>
+    /// <returns></returns>
     public int[] newElemXY(int?[,] oldTreeArray)
     {
         int[] xy = new int[2];
@@ -275,24 +308,12 @@ public class Visualizer
         return xy;
     }
 
-    /*public int[] removedElemXY(int?[,] oldTreeArray)
-    {
-        int[] xy = new int[2];
-        int j;
-        for (j = 0; j < treeArray.GetLength(1); j++)
-        {
-            if (oldTreeArray[findData(j, oldTreeArray), j] != treeArray[findData(j, treeArray), j])
-            {
-                xy[0] = findData(j, treeArray);
-                xy[1] = j;
-                return xy;
-            }
-        }
-        xy[0] = findData(j, );
-        xy[1] = j;
-        return xy;
-    }*/
-
+    /// <summary>
+    /// Значение элемента.
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="array"></param>
+    /// <returns></returns>
     private int findData(int row, int?[,] array)
     {
         for (int i = 0; i < array.GetLength(0); i++)
