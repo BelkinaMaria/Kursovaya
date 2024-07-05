@@ -251,7 +251,6 @@
         private Button buttonStop;
         private PictureBox pictureBoxCompare;
         private Button buttonContinue;
-        private Button button2;
         private Button buttonBack;
     }
 }
