@@ -15,8 +15,6 @@ public partial class MainForm : Form
 {
     Management management = new Management();
 
-    private bool continueStepByStep;
-    private bool stopStepByStep;
     private int currentStep;
     List<int[]> steps;
     Visualizer? oldVisualizer;
@@ -416,5 +414,11 @@ public partial class MainForm : Form
             management.visualizer.drawTree(g);
             pictureBoxBT.Image = bmp;
         }
+    }
+
+    private void buttonInfo_Click(object sender, EventArgs e)
+    {
+        FormInfo formInfo = new FormInfo();
+        formInfo.ShowDialog();
     }
 }

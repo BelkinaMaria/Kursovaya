@@ -127,6 +127,7 @@
             buttonInfo.TabIndex = 1;
             buttonInfo.Text = "Информация";
             buttonInfo.UseVisualStyleBackColor = true;
+            buttonInfo.Click += buttonInfo_Click;
             // 
             // groupBoxSelectOperation
             // 
@@ -233,7 +234,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { ToolStripMenuItemStates });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1665, 42);
+            menuStrip1.Size = new Size(1665, 40);
             menuStrip1.TabIndex = 10;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -241,7 +242,7 @@
             // 
             ToolStripMenuItemStates.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemBack, ToolStripMenuItemNext });
             ToolStripMenuItemStates.Name = "ToolStripMenuItemStates";
-            ToolStripMenuItemStates.Size = new Size(288, 38);
+            ToolStripMenuItemStates.Size = new Size(288, 36);
             ToolStripMenuItemStates.Text = "Проход по состояниям";
             // 
             // ToolStripMenuItemBack
