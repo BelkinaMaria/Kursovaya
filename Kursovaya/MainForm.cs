@@ -134,15 +134,23 @@ public partial class MainForm : Form
                     if (management.visualizer != null)
                     {
                         oldVisualizer = management.visualizer;
+                        management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+                        steps = management.GetStepByStepList(value, management.visualizer);
+                        management.ShowStepByStepInsert(steps[currentStep], oldVisualizer, pictureBoxBT, pictureBoxCompare);
                     }
                     else
                     {
-                        oldVisualizer = null;
+                        management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
+                        management.updateStorage(value);
+                        management.visualizer.drawTree(g);
+                        pictureBoxBT.Image = bmp;
+
+                        buttonInsert.Enabled = true;
+                        buttonSearch.Enabled = true;
+                        buttonRemove.Enabled = true;
                     }
 
-                    management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
-                    steps = management.GetStepByStepList(value, management.visualizer);
-                    management.ShowStepByStepInsert(steps[currentStep], oldVisualizer, pictureBoxBT, pictureBoxCompare);
+                    
                     break;
 
                 case OperationType.Search:
@@ -163,7 +171,7 @@ public partial class MainForm : Form
             {
                 management.tree.remove(value);
             }
-            endOfTheOperation(steps[steps.Count - 1][2]);
+            endOfTheOperation(value);
             management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
             management.updateStorage(value);
             management.visualizer.drawTree(g);
