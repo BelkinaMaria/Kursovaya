@@ -167,10 +167,6 @@ public partial class MainForm : Form
         }
         else
         {
-            if (management.operation == OperationType.Remove)
-            {
-                management.tree.remove(value);
-            }
             endOfTheOperation(value);
             management.visualizer = new Visualizer(pictureBoxBT.Width, pictureBoxBT.Height, management.tree);
             management.updateStorage(value);

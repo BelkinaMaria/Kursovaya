@@ -170,7 +170,7 @@ public class Visualizer
             {
                 if (treeArray[i, j] != null && treeArrayNode[i, j].right != null)
                 {
-                    int k = j/*nextNumRight(i + 1, j)*/;
+                    int k = j;
                     while (treeArray[i + 1, k] != treeArrayNode[i, j].right.data)
                     {
                         k++;

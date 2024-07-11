@@ -51,7 +51,7 @@ public class Storage
     }
 
     /// <summary>
-    /// К предыдущей стадии
+    /// К предыдущей стадии.
     /// </summary>
     /// <returns>true - получилось, false - не получилось.</returns>
     public bool MoveToPreviouseState()
